@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Login</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+  <div class="container">
+    <h2>User Login</h2>
+    <form id="login-form">
+      <label for="login-email">Email:</label>
+      <input type="email" id="login-email" required />
+
+      <label for="login-password">Password:</label>
+      <input type="password" id="login-password" required />
+
+      <button type="submit">Login</button>
+    </form>
+    <p id="login-status"></p>
+    <p>Don't have an account? <a href="user-register.html">Register here</a></p>
+  </div>
+
+  <script type="module" src="user-auth.js"></script>
+</body>
+</html>

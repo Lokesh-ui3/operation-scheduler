@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>View Doctors</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+
+  <div class="container">
+    <h2>Doctor Details</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>specialization</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody id="doctor-table"></tbody>
+    </table>
+    <button onclick="location.href='user-dashboard.html'">⬅ Back</button>
+  </div>
+
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+  import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyACx_gGIBpcs-K-kDLX4W8zMQgkczHVCyI",
+    authDomain: "operation-scheduler-40443.firebaseapp.com",
+    databaseURL: "https://operation-scheduler-40443-default-rtdb.firebaseio.com",
+    projectId: "operation-scheduler-40443",
+    storageBucket: "operation-scheduler-40443.appspot.com",
+    messagingSenderId: "439737052047",
+    appId: "1:439737052047:web:483c45b9c9f90466b479fa"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const auth = getAuth(app);
+  const doctorTable = document.getElementById("doctor-table");
+
+  // ✅ Make sure user is logged in before loading doctors
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      alert("❗ You must be logged in to view doctor details.");
+      window.location.href = "user-login.html"; // redirect if not logged in
+    } else {
+      // ✅ Now fetch doctors only after auth confirmed
+      get(child(ref(db), "doctors"))
+        .then((snapshot) => {
+          if (!snapshot.exists()) {
+            doctorTable.innerHTML = "<tr><td colspan='3'>No doctors found</td></tr>";
+            return;
+          }
+
+          snapshot.forEach((childSnap) => {
+            const doc = childSnap.val();
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${doc.name || "-"}</td>
+              <td>${doc.specialization || "-"}</td>
+              <td>${doc.contact || "-"}</td>
+            `;
+            doctorTable.appendChild(row);
+          });
+        })
+        .catch((error) => {
+          console.error("❌ Doctor fetch failed:", error.message);
+          doctorTable.innerHTML = `<tr><td colspan='3'>❌ Error: ${error.message}</td></tr>`;
+        });
+    }
+  });
+</script>
+
+
+
+</body>
+</html>

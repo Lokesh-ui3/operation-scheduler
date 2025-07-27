@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+  </head>
+
+  <style>
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .button-group button {
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 6px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .button-group button:hover {
+      background-color: #218838;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <h2>Admin Dashboard</h2>
+
+      <div class="button-group">
+        <button onclick="location.href='add-doctor.html'">➕ Add Doctor</button>
+        <button onclick="location.href='add-patient.html'">
+          ➕ Add Patient
+        </button>
+        <button onclick="location.href='schedule-operation.html'">
+          🏥 Add Operation Schedule
+        </button>
+        <button onclick="location.href='view-logs.html'">
+          📋 View Operation Logs
+        </button>
+        <button id="logout-btn" style="background-color: #dc3545">
+          🚪 Logout
+        </button>
+        <button onclick="location.href='patient-history.html'">📖 Patient History</button>
+
+      </div>
+    </div>
+
+    <script type="module">
+      import { auth } from "./firebase-config.js";
+      import {
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+
+      // Redirect to login if not logged in
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          alert("Please login first.");
+          location.href = "index.html";
+        }
+      });
+
+      // Logout button logic
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        signOut(auth)
+          .then(() => {
+            alert("✅ Logged out successfully.");
+            location.href = "index.html";
+          })
+          .catch((error) => {
+            console.error("Logout error:", error.message);
+          });
+      });
+    </script>
+  </body>
+</html>

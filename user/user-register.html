@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Register</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+  <div class="container">
+    <h2>User Registration</h2>
+    <form id="register-form">
+      <label for="reg-email">Email:</label>
+      <input type="email" id="reg-email" required />
+
+      <label for="reg-password">Password:</label>
+      <input type="password" id="reg-password" required />
+
+      <button type="submit">Register</button>
+    </form>
+    <p id="reg-status"></p>
+    <p>Already have an account? <a href="user-login.html">Login here</a></p>
+  </div>
+
+  <script type="module" src="user-auth.js"></script>
+</body>
+</html>
